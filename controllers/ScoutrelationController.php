@@ -4,6 +4,8 @@ namespace app\controllers;
 
 use Yii;
 use yii\filters\AccessControl;
+use yii\helpers\ArrayHelper;
+use yii\data\ActiveDataProvider;
 use app\models\Scoutrelation;
 use app\models\Scoutparent;
 use app\models\ScoutrelationSearch;
@@ -37,7 +39,7 @@ class ScoutrelationController extends Controller
                         'roles' => ['@'],
                     ],
                     [
-                        'actions' => ['index','create','update'],
+                        'actions' => ['index','create','update','delete'],
                         'allow' => true,
                         'roles' => ['parent','leader'],
                     ],
@@ -61,6 +63,20 @@ class ScoutrelationController extends Controller
     {
         $searchModel = new ScoutrelationSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $dataProvider = Null;
+
+        if (Yii::$app->user->identity->getIsParent()) {
+            $thisuser =  Yii::$app->user->getId();
+            $parent = Scoutparent::findOne(['userid' => $thisuser]);
+            $scoutrelations = Scoutrelation::find()->where(['parentid' => $parent->id])->all();
+            $dataProvider = new ActivedataProvider([
+                'query' => Scoutrelation::find()->where(['parentid' => $parent->id]),
+                'pagination' => [
+                    'pageSize' => 20,
+                ],
+            ]);
+        }
+
 
         return $this->render('index', [
             'searchModel' => $searchModel,
