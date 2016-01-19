@@ -7,6 +7,7 @@ use yii\db\Query;
 use yii\data\ActiveDataProvider;
 use yii\filters\AccessControl;
 use yii\helpers\ArrayHelper;
+use app\models\User;
 use app\models\Order;
 use app\models\Scoutrelation;
 use app\models\Scoutparent;
@@ -47,6 +48,10 @@ class OrderController extends Controller
                         'allow' => true,
                         'roles' => ['leader'],
                     ],
+                    [
+                        'allow' => true,
+                        'roles' => ['admin'],
+                    ],
                 ],
             ],
 
@@ -65,6 +70,7 @@ class OrderController extends Controller
      */
     public function actionIndex()
     {
+        $dataProvider = Null;
         $searchModel = new OrderSearch();
 
         if (Yii::$app->user->identity->getIsScout()) {

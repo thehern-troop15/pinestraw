@@ -12,14 +12,14 @@ $this->title = 'Troop 15 - Pinestraw';
 
 <?php
 
-if (!Yii::$app->user->isGuest && !Yii::$app->user->identity->getIsScout() && !Yii::$app->user->identity->getIsParent() ) {
+if (!Yii::$app->user->isGuest && !Yii::$app->user->identity->getIsScout() && !Yii::$app->user->identity->getIsParent() && !Yii::$app->user->identity->getIsAdmin()) {
 ?>
         <h1>Are you a Scout or a Parent?</h1>
         
         <p><?=Html::a('Scout', ['/scout/create'], ['class'=>'btn btn-lg btn-success']) ?>
         <p><?=Html::a('Parent', ['/scoutparent/create'], ['class'=>'btn btn-lg btn-success']) ?>
 <?php
-} elseif (!Yii::$app->user->isGuest && Yii::$app->user->identity->getIsParent() &&!Yii::$app->user->identity->getIsLeader() ) {
+} elseif (!Yii::$app->user->isGuest && Yii::$app->user->identity->getIsParent() && !Yii::$app->user->identity->getIsLeader() ) {
 ?>
         <i>Please click on "My Scouts" to add your Scouts"</i><br><br>
         <p><?=Html::a('New Order', ['/order/create'], ['class'=>'btn btn-lg btn-success']) ?>

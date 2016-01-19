@@ -41,11 +41,14 @@ $config = [
             'useFileTransport' => false,
             'transport' => [
                 'class' => 'Swift_SmtpTransport',
+                'host' => '127.0.0.1',
+/*
                 'host' => 'mailtrap.io',
                 'username' => '547095adc3d4b3c8c',
                 'password' => 'fb4f55df6a4cf2',
                 'port' => '2525',
                 'encryption' => 'tls',
+*/
                            ],
         ],
         'log' => [
@@ -64,6 +67,8 @@ $config = [
         ],
     ],
     'layout' => 'main',
+    'name' => 'Troop 15 - Pinestraw',
+
     'params' => $params,
 ];
 
