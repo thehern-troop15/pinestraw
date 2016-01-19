@@ -11,9 +11,18 @@ use yii\widgets\ActiveForm;
 /* @var $form yii\widgets\ActiveForm */
 ?>
 
+<?php
+$this->registerJs("$('#number_bales').keyup(function(){
+        var numbales = $('#number_bales').val();
+        var fee = numbales * 4.5;
+        fee = fee.toFixed(2);
+        $('#order_amount').val(fee);
+});"); 
+?>
+
 <div class="order-form">
 
-    <?php $form = ActiveForm::begin(); ?>
+    <?php $form = ActiveForm::begin(['id' => 'orderform']); ?>
 
 
     <?php 
@@ -43,9 +52,9 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'check_number')->textInput() ?>
 
-    <?= $form->field($model, 'number_bales')->textInput() ?>
+    <div class="orderr" id="order-numbales"><?= $form->field($model, 'number_bales')->textInput(['id' => 'number_bales']) ?></div>
 
-    <?= $form->field($model, 'order_amount')->textInput() ?>
+    <div class="orderr" id="order-amount"><?= $form->field($model, 'order_amount')->textInput(['id' => 'order_amount', 'disabled' => 'true']) ?></div>
 
     <div class="form-group">
         <?= Html::submitButton($model->isNewRecord ? 'Create' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
