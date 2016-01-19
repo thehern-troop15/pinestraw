@@ -135,8 +135,8 @@ class OrderController extends Controller
 
         if ($model->load(Yii::$app->request->post())) {
             if (Yii::$app->user->identity->getIsParent()) {
-                $order = Yii::$app->request->post('Order');
-                $scoutid = $order['scoutid'];
+                $model->order_amount = number_format($model->number_bales * 4.5, 2, '.','');
+                $scoutid = $model->scoutid;
                 $scoutrelation = Scoutrelation::find()->where(['id' => $scoutid])->one();
                 $result = $scoutrelation->getAttributes(['scoutid']);
 
@@ -146,8 +146,18 @@ class OrderController extends Controller
             if ($model->save()) {
                 return $this->redirect(['/site/index', 'id' => $model->id]);
             } else {
+                if (Yii::$app->user->identity->getIsScout()) {
+                    $thisuser =  Yii::$app->user->getId();
+                    $scout = Scout::findOne(['userid' => $thisuser]);
+                    $scoutlist = ArrayHelper::map(Scout::findAll(['id' => $scout->id]), 'id', 'name');
+                } elseif (Yii::$app->user->identity->getIsParent()) {
+                    $scoutlist = ArrayHelper::map(Scoutrelation::find()->all(), 'id', 'scout.name');
+                } elseif (Yii::$app->user->identity->getIsLeader()) {
+                    $scoutlist = ArrayHelper::map(Scoutrelation::find()->all(), 'id', 'scout.name');
+                }
                 return $this->render('create', [
                     'model' => $model,
+                    'scoutlist' => $scoutlist,
                 ]);
             }
         } else {
@@ -156,7 +166,9 @@ class OrderController extends Controller
                 $scout = Scout::findOne(['userid' => $thisuser]);
                 $scoutlist = ArrayHelper::map(Scout::findAll(['id' => $scout->id]), 'id', 'name');
             } elseif (Yii::$app->user->identity->getIsParent()) {
-                $scoutlist = ArrayHelper::map(Scoutrelation::find()->all(), 'id', 'scout.name');
+                $thisuser =  Yii::$app->user->getId();
+                $parent = Scoutparent::findOne(['userid' => $thisuser]);
+                $scoutlist = ArrayHelper::map(Scoutrelation::find()->where(['parentid' => $parent->id])->all(), 'id', 'scout.name');
             } elseif (Yii::$app->user->identity->getIsLeader()) {
                 $scoutlist = ArrayHelper::map(Scoutrelation::find()->all(), 'id', 'scout.name');
             }

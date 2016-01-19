@@ -42,7 +42,7 @@ class Order extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['name', 'scoutid', 'house_number', 'street_name', 'city', 'zip', 'phone', 'payment_type', 'number_bales', 'order_amount'], 'required'],
+            [['name', 'scoutid', 'house_number', 'street_name', 'city', 'zip', 'phone', 'payment_type', 'number_bales'], 'required'],
             [['name', 'subdivision', 'house_number', 'street_name', 'city', 'zip', 'phone', 'drop_location', 'payment_type', 'check_number', 'number_bales', 'order_amount'], 'string'],
             [['scoutid'], 'integer']
         ];
