@@ -44,7 +44,7 @@ class OrderController extends Controller
                         'roles' => ['parent','scout','leader'],
                     ],
                     [
-                        'actions' => ['createany','delete'],
+                        'actions' => ['createany','leader','delete'],
                         'allow' => true,
                         'roles' => ['leader'],
                     ],
@@ -84,28 +84,36 @@ class OrderController extends Controller
                     'pageSize' => 20,
                 ],
             ]);
-        } elseif (Yii::$app->user->identity->getIsLeader()) {
-            $query = new Query();
-            $dataProvider = new ActivedataProvider([
-                'query' => Order::find(),
-                'pagination' => [
-                    'pageSize' => 20,
-                ],
-            ]);
         } elseif (Yii::$app->user->identity->getIsParent()) {
             $thisuser =  Yii::$app->user->getId();
             $parent = Scoutparent::findOne(['userid' => $thisuser]);
-            $scoutrelations = Scoutrelation::find()->where(['parentid' => $parent->id])->all();
-
-            $query = new Query();
-            $query->andFilterWhere(['scoutid' => ArrayHelper::getColumn($scoutrelations, ['scoutid'])]);
+            $scoutrelations =  ArrayHelper::map(Scoutrelation::find()->where(['parentid' => $parent->id])->all(), 'scoutid','scoutid');
+            $query = Order::find()->where(['scoutid' => $scoutrelations]);
             $dataProvider = new ActivedataProvider([
-                'query' => Order::find(),
+                'query' => $query,
                 'pagination' => [
                     'pageSize' => 20,
                 ],
             ]);
         }
+        return $this->render('index', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+        ]);
+    }
+
+    public function actionLeader()
+    {
+        $dataProvider = Null;
+        $searchModel = new OrderSearch();
+
+        $query = new Query();
+        $dataProvider = new ActivedataProvider([
+            'query' => Order::find(),
+            'pagination' => [
+                'pageSize' => 20,
+            ],
+        ]);
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,

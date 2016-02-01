@@ -38,7 +38,10 @@ AppAsset::register($this);
     echo Nav::widget([
         'options' => ['class' => 'navbar-nav navbar-right'],
         'items' => [
-            ['label' => 'Orders', 'url' => ['/order/index'],
+            ['label' => 'All Orders', 'url' => ['/order/leader'],
+                'visible' => Yii::$app->user->identity->GetIsLeader(),
+            ],
+            ['label' => 'My Orders', 'url' => ['/order/index'],
                 'visible' => !Yii::$app->user->isGuest,
             ],
             ['label' => 'Scout Profile', 'url' => ['/scout/viewme'],
