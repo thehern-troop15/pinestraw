@@ -114,7 +114,7 @@ class OrderController extends Controller
                 'pageSize' => 20,
             ],
         ]);
-        return $this->render('index', [
+        return $this->render('leader', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
         ]);
