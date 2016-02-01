@@ -39,7 +39,7 @@ AppAsset::register($this);
         'options' => ['class' => 'navbar-nav navbar-right'],
         'items' => [
             ['label' => 'All Orders', 'url' => ['/order/leader'],
-                'visible' => Yii::$app->user->identity->GetIsLeader(),
+                'visible' => !Yii::$app->user->isGuest && Yii::$app->user->identity->GetIsLeader(),
             ],
             ['label' => 'My Orders', 'url' => ['/order/index'],
                 'visible' => !Yii::$app->user->isGuest,
