@@ -37,7 +37,7 @@ class Scout extends \yii\db\ActiveRecord
     {
         return [
             [['userid', 'patrolid', 'name', 'phone'], 'required'],
-            [['userid', 'patrolid', 'created_at', 'updated_at'], 'integer'],
+            [['userid', 'patrolid'], 'integer'],
             [['name', 'phone'], 'string']
         ];
     }

@@ -229,13 +229,13 @@ class OrderController extends Controller
                 $thisuser =  Yii::$app->user->getId();
                 $scout = Scout::findOne(['userid' => $thisuser]);
                 $scoutlist = ArrayHelper::map(Scout::findAll(['id' => $scout->id]), 'id', 'name');
+            } elseif (Yii::$app->user->identity->getIsLeader()) {
+                $scoutlist = ArrayHelper::map(Scoutrelation::find()->all(), 'id', 'scout.name');
             } elseif (Yii::$app->user->identity->getIsParent()) {
                 $thisuser =  Yii::$app->user->getId();
                 $thisparent = Scoutparent::findOne(['userid' => $thisuser]);
                 $myscouts = Scoutrelation::find()->where(['parentid' => $thisparent->id])->all();
                 $scoutlist = ArrayHelper::map(Scout::find()->where(['id' => ArrayHelper::getColumn($myscouts, 'scoutid')])->all(),'id','name');
-            } elseif (Yii::$app->user->identity->getIsLeader()) {
-                $scoutlist = ArrayHelper::map(Scoutrelation::find()->all(), 'id', 'scout.name');
             }
             return $this->render('update', [
                 'model' => $model,

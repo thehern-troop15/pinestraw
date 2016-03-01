@@ -51,6 +51,11 @@ class ScoutController extends Controller
                         'allow' => true,
                         'roles' => ['parent','leader'],
                     ],
+                    [
+                        'actions' => ['delete'],
+                        'allow' => true,
+                        'roles' => ['leader'],
+                    ],
                 ],
             ],
 
@@ -171,12 +176,12 @@ class ScoutController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
-
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+            return $this->redirect(['index', 'id' => $model->id]);
         } else {
             return $this->render('update', [
                 'model' => $model,
+                'where' => '',
             ]);
         }
     }
