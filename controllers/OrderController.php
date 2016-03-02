@@ -222,6 +222,9 @@ class OrderController extends Controller
     {
         $model = $this->findModel($id);
 
+        if ($model->load(Yii::$app->request->post())) {
+            $model->order_amount = number_format($model->number_bales * 4.5,2,'.','');
+        }
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['/order/index', 'id' => $model->id]);
         } else {

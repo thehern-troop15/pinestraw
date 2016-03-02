@@ -52,13 +52,11 @@ $this->registerJs("$('#number_bales').keyup(function(){
 
     <?= $form->field($model, 'check_number')->textInput() ?>
 
-    <div class="orderr" id="order-numbales"><?= $form->field($model, 'number_bales')->textInput(['id' => 'number_bales']) ?></div>
+    <?= $form->field($model, 'number_bales')->textInput(['id' => 'number_bales']) ?>
 
-    <div class="orderr" id="order-amount"><?= $form->field($model, 'order_amount')->textInput(['id' => 'order_amount', 'disabled' => 'true']) ?></div>
+    <?= $form->field($model, 'order_amount')->textInput(['id' => 'order_amount', 'disabled' => 'true']) ?>
 
-    <div class="form-group">
         <?= Html::submitButton($model->isNewRecord ? 'Create' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
-    </div>
 
     <?php ActiveForm::end(); ?>
 
