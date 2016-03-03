@@ -76,10 +76,9 @@ class OrderController extends Controller
         if (Yii::$app->user->identity->getIsScout()) {
             $thisuser =  Yii::$app->user->getId();
             $scout = Scout::findOne(['userid' => $thisuser]);
-            $query = new Query();
-            $query->andFilterWhere(['scoutid' => $scout->id]);
+            $query = Order::find()->where(['scoutid' => $scout->id]);
             $dataProvider = new ActivedataProvider([
-                'query' => Order::find(),
+                'query' => $query ,
                 'pagination' => [
                     'pageSize' => 20,
                 ],
@@ -221,11 +220,12 @@ class OrderController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
+        $model1 = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post())) {
             $model->order_amount = number_format($model->number_bales * 4.5,2,'.','');
         }
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+        if ($model1->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['/order/index', 'id' => $model->id]);
         } else {
             if (Yii::$app->user->identity->getIsScout()) {
@@ -233,7 +233,8 @@ class OrderController extends Controller
                 $scout = Scout::findOne(['userid' => $thisuser]);
                 $scoutlist = ArrayHelper::map(Scout::findAll(['id' => $scout->id]), 'id', 'name');
             } elseif (Yii::$app->user->identity->getIsLeader()) {
-                $scoutlist = ArrayHelper::map(Scoutrelation::find()->all(), 'id', 'scout.name');
+                $scoutlist = ArrayHelper::map(Scout::find()->all(), 'id', 'name');
+
             } elseif (Yii::$app->user->identity->getIsParent()) {
                 $thisuser =  Yii::$app->user->getId();
                 $thisparent = Scoutparent::findOne(['userid' => $thisuser]);

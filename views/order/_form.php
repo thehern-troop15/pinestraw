@@ -28,8 +28,9 @@ $this->registerJs("$('#number_bales').keyup(function(){
     <?php 
        if (Yii::$app->user->identity->getIsScout())
            print $form->field($model, 'scoutid')->dropDownList($scoutlist)->label('Scout');
-       else
+       else {
            print $form->field($model, 'scoutid')->dropDownList($scoutlist, ['prompt' => 'Choose a Scout'],['options' => [ $model->scoutid => ['selected' => true]]])->label('Scout');
+}
     ?>
 
     <?= $form->field($model, 'name')->textInput() ?>
