@@ -2,6 +2,24 @@
 
 use yii\helpers\Html;
 use yii\grid\GridView;
+use kartik\export\ExportMenu;
+$gridColumns = [
+    'name',
+    ['attribute' => 'scout.name',
+        'header' => 'Scout',
+    ],
+    'subdivision',
+    'house_number',
+    'street_name',
+    'city',
+    'zip',
+    'phone',
+    'drop_location',
+    'payment_type',
+    'check_number',
+    'number_bales',
+    'order_amount',
+];
 
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\OrderSearch */
@@ -10,6 +28,19 @@ use yii\grid\GridView;
 $this->title = 'Orders';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
+<b>
+Export Orders:
+<?php
+// Renders a export dropdown menu
+echo ExportMenu::widget([
+    'dataProvider' => $dataProvider,
+    'columns' => $gridColumns
+]);
+?>
+<br>
+Total Number of Bales: <?= $totalbales?><br>
+Total Cost: <?= number_format($totalbales * 4.5, 2, '.','')?>
+</b>
 <div class="order-index">
 
     <h1><?= Html::encode($this->title) ?></h1>

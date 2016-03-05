@@ -10,6 +10,11 @@ use yii\grid\GridView;
 $this->title = 'Orders';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
+<b>
+Total Number of Bales: <?= $totalbales?><br>
+Total Cost: <?= number_format($totalbales * 4.5, 2, '.','')?>
+</b>
+
 <div class="order-index">
 
     <h1><?= Html::encode($this->title) ?></h1>

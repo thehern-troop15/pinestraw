@@ -72,6 +72,7 @@ class OrderController extends Controller
     {
         $dataProvider = Null;
         $searchModel = new OrderSearch();
+        $totalbales = 0;
 
         if (Yii::$app->user->identity->getIsScout()) {
             $thisuser =  Yii::$app->user->getId();
@@ -95,9 +96,19 @@ class OrderController extends Controller
                 ],
             ]);
         }
+        $totalProvider = new ActiveDataProvider([
+            'query' => $query,
+        ]);
+        $totalProvider->setPagination(False);
+        $models = $totalProvider->getModels();
+        $totalProvider->setPagination(False);
+        foreach ($models as $item) {
+            $totalbales += $item->number_bales;
+        }
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
+            'totalbales' => $totalbales,
         ]);
     }
 
@@ -105,6 +116,7 @@ class OrderController extends Controller
     {
         $dataProvider = Null;
         $searchModel = new OrderSearch();
+        $totalbales = 0;
 
         $query = new Query();
         $dataProvider = new ActivedataProvider([
@@ -113,9 +125,18 @@ class OrderController extends Controller
                 'pageSize' => 20,
             ],
         ]);
+        $totalProvider = new ActiveDataProvider([
+            'query' => Order::find(),
+        ]);
+        $totalProvider->setPagination(False);
+        $models = $totalProvider->getModels();
+        foreach ($models as $item) {
+            $totalbales += $item->number_bales;
+        }
         return $this->render('leader', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
+            'totalbales' => $totalbales,
         ]);
     }
 
