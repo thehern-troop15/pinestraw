@@ -162,8 +162,8 @@ class OrderController extends Controller
         $model = new Order();
 
         if ($model->load(Yii::$app->request->post())) {
+            $model->order_amount = number_format($model->number_bales * 4.5, 2, '.','');
             if (Yii::$app->user->identity->getIsParent()) {
-                $model->order_amount = number_format($model->number_bales * 4.5, 2, '.','');
                 $scoutid = $model->scoutid;
                 $scoutrelation = Scoutrelation::find()->where(['id' => $scoutid])->one();
                 $result = $scoutrelation->getAttributes(['scoutid']);
@@ -212,9 +212,7 @@ class OrderController extends Controller
         $model = new Order();
 
         if ($model->load(Yii::$app->request->post())) {
-
-            $order = Yii::$app->request->post('Order');
-
+            $model->order_amount = number_format($model->number_bales * 4.5, 2, '.','');
             if ($model->save()) {
                 return $this->redirect(['index', 'id' => $model->id]);
             } else {
